@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+      <link rel ="stylesheet" href ='style.css' type='text/css'>
+      <title>Giphy API</title>
+
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+      <div class="container">
+        <h1 class='header center teal-text'>Giphy API</h1>
+        <div id='buttons' class="row buttons">
+
+        </div>
+        <div class="row">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s4 offset-s3">
+                <input placeholder="Enter a keyword" id="keyWord" type="text" class="validate" autocomplete="off">
+              </div>
+              <button id='createBtn' class="createBtn btn waves-effect waves-light blue">Create Button</button>
+            </div>
+          </form>
+        </div>
+
+        <ul id='gifDiv' class="collapsible" data-collapsible="accordion">
+        </ul>
+
+      </div>
+
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+      <!-- Compiled and minified JavaScript -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+      <script type="text/javascript" src="script.js"></script>
+    </body>
+  </html>
