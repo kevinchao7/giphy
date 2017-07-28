@@ -2,7 +2,6 @@
 var key = '51d500a55d6649e7b4519a36d23704a3';
 // Stores gifDiv in a variable
 var gifDiv = $('#gifDiv');
-var gifLoadArr = [];
 gifDiv.hide();
 
 // "Create Button" click function
@@ -34,69 +33,79 @@ $('#buttons').on('click', '.apiBtn', function() {
   // Keyword for ajax request
   var keyWord = $(this).attr('id');
 
-  if (gifLoadArr.indexOf(keyWord) === -1) {
+  // If element exists already, delete it and replace.
+  var element = document.getElementById(keyWord+'li');
+  if (element){
+    element.parentNode.removeChild(element);
+  }
     // Query URL
     var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=' + key + '&q=' + keyWord + '&limit=25&offset=0&rating=G&lang=en';
-
-    console.log(keyWord);
 
     // Performs API call
     $.ajax({
       url: queryURL,
       method: "GET"
     }).done(function(response) {
-      // Array to prevent same gif from being called.
-      var arr = [];
+      // Does nothing if Ajax returns error.
+      if (response.data[0] !== undefined){
+        // Array to prevent same gif from being called.
+        var arr = [];
 
-      var li = $('<li>');
-      // Creates collapsible Div
-      var newDivHeader = $('<div>');
-      newDivHeader.addClass('collapsible-header');
+        var li = $('<li>');
+        li.attr('id',keyWord+'li');
+        // Creates collapsible Div
+        var newDivHeader = $('<div>');
+        newDivHeader.addClass('collapsible-header');
 
-      var newSpan = $('<span>');
-      newSpan.addClass('badge');
-      newSpan.text(10);
+        var newSpan = $('<span>');
+        newSpan.addClass('badge');
+        newSpan.text(10);
 
-      var newI = $('<i>');
-      newI.addClass('material-icons');
-      newI.text('image');
-      newDivHeader.text((keyWord.toLowerCase()).capitalize());
+        var newI = $('<i>');
+        newI.addClass('material-icons');
+        newI.text('image');
+        newDivHeader.text((keyWord.toLowerCase()).capitalize());
+        newDivHeader.prepend(newI);
+        newDivHeader.prepend(newSpan);
 
-      var newDivBody = $('<div>');
-      newDivBody.addClass('collapsible-body');
-
-
-      // While loop to append 10 images
-      while (arr.length < 10) {
-        // Generates random number
-        var random = Math.floor(Math.random() * 25);
+        var newDivBody = $('<div>');
+        newDivBody.addClass('collapsible-body center');
 
 
-        if (arr.indexOf(random) === -1) {
-          // Creates img Element
-          var img = $('<img>');
-          img.addClass('giphy');
-          // Adds image to src
-          img.attr('src', response.data[random].images.downsized.url);
-          newDivBody.append(img);
-          arr.push(random);
+        // While loop to append 10 images
+        while (arr.length < 10) {
+          // Generates random number
+          var random = Math.floor(Math.random() * 25);
+
+
+          if (arr.indexOf(random) === -1) {
+            // Creates img Element
+            var img = $('<img>');
+            img.addClass('giphy');
+            // Adds image to src
+            img.attr('src', response.data[random].images.downsized.url);
+            newDivBody.append(img);
+            arr.push(random);
+          }
+
+          // Log if stuck in a while loop
+          console.log('im in a while loop');
         }
 
-        // Log if stuck in a while loop
-        console.log('im in a while loop');
-      }
+        // Appends Elements
+        li.append(newDivHeader);
+        li.append(newDivBody);
+        gifDiv.prepend(li);
 
-      li.append(newDivHeader);
-      li.append(newDivBody);
-      gifDiv.append(li);
+        // Opens collapsible-body
+        $('.collapsible').collapsible('open',0);
+
+        // Turns on gifDiv if hidden
+        if(!gifDiv.is(':visible')){
+          gifDiv.show();
+        }
+      }
     });
-    gifLoadArr.push(keyWord);
-    // Turns on gifDiv if hidden
-    if(!gifDiv.is(':visible')){
-      gifDiv.show();
-      console.log('show');
-    }
-  }
 });
 
 // ES6 Capitlize words in a string
